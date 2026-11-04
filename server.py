@@ -35,10 +35,11 @@ GROUPS = {
     "agency": lambda r: r.agency,
     "source": lambda r: r.source,
     "weekday": lambda r: r.opened.strftime("%A"),
+    "hour": lambda r: str(r.opened.hour),
     "status": lambda r: r.status,
 }
 
-CountGroup = Literal["neighborhood", "service", "agency", "source", "weekday", "status"]
+CountGroup = Literal["neighborhood", "service", "agency", "source", "weekday", "hour", "status"]
 MedianGroup = Literal["neighborhood", "agency"]
 
 
@@ -134,7 +135,9 @@ def count_requests(
     Without group_by, returns one number. With group_by, returns a dict of
     group to count, largest first, at most 50 groups; requests with a blank
     value for that field are left out. Use this for "how many", "which is
-    most common", and "busiest day" questions. For time to close, use
+    most common", "busiest day", and "busiest hour" questions.
+    group_by="hour" groups by the hour each request was opened, as "0" to
+    "23" in San Francisco local time. For time to close, use
     median_close_hours instead.
 
     service and neighborhood must be exact names from dataset_info.
