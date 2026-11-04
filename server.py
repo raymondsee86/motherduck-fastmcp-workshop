@@ -230,7 +230,8 @@ def count_in_neighborhood(
         hint = f" Did you mean: {', '.join(suggestions)}?" if suggestions else ""
         raise ToolError(f"Unknown neighborhood {name!r}.{hint} Call dataset_info for the official names.")
 
-    in_area = [r for r in REQUESTS if r.local_name == name]
+    # Rows with no official neighborhood belong to no part, so "all" stays the sum of the parts.
+    in_area = [r for r in REQUESTS if r.local_name == name and r.neighborhood]
     parts = _overlaps(name)
     whole = f"All of {name}"
 
